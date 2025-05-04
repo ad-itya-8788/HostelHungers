@@ -5,10 +5,26 @@ require 'active.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard |Hostel Hungers - Admin Portal
- </title>
+   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Hostel Hungers - Admin Portal</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/235/235861.png" type="image/png">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Access the Hostel Hungers Admin Dashboard. Manage users, menu items, orders, and more from a single portal.">
+  <meta name="keywords" content="Hostel Hungers Admin, Dashboard, Admin Portal, Hostel Food Management, Menu Control, Order Management, Student Meals">
+  <meta name="author" content="Hostel Hungers Team">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#FF6F00">
+
+  <!-- Open Graph / Social Media Tags -->
+  <meta property="og:title" content="Admin Dashboard | Hostel Hungers">
+  <meta property="og:description" content="Powerful and simple admin panel to manage Hostel Hungers’ operations.">
+  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/235/235861.png">
+  <meta property="og:url" content="https://hostelhungers.onrender.com/admin-dashboard">
+  <meta name="twitter:card" content="summary_large_image">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">

@@ -100,10 +100,29 @@ $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Aditya - Menu</title>
-    <!-- Google Fonts -->
+     <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostel Hungers - Menu</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://hostelhungers.onrender.com/photos/hostelhunger.jpg" type="image/png">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Explore the delicious and healthy homemade menu by Hostel Hungers. Perfect for students and hostelers who crave tasty, nutritious food.">
+  <meta name="keywords" content="Hostel Hungers, Hostel Food, Menu, Homemade Food, Healthy Food, Student Meals, Food Delivery, Hostel Menu">
+  <meta name="author" content="Hostel Hungers Team">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#FF6F00">
+
+  <!-- Open Graph / Social Media Tags -->
+  <meta property="og:title" content="Hostel Hungers - Menu">
+  <meta property="og:description" content="Check out our variety of healthy, home-cooked meals designed for hostel students.">
+  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/235/235861.png">
+  <meta property="og:url" content="https://hostelhungers.onrender.com/menu">
+  <meta name="twitter:card" content="summary_large_image">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
