@@ -421,7 +421,7 @@ $vc = pg_fetch_result($vcResult, 0, 0);
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p class="mb-0">© <?php echo date('Y'); ?> Hotel Aditya. All rights reserved.</p>
+            <p class="mb-0">© <?php echo date('Y'); ?> Hostel Hungers. All rights reserved.</p>
         </div>
     </footer>
 

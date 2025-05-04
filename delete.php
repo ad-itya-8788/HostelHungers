@@ -221,7 +221,7 @@ require 'active.php';
 
 <footer class="footer">
     <div class="container">
-        <p class="mb-0" style="text-align:center;">&copy; <?php echo date('Y'); ?> Hotel Aditya. All rights reserved.</p>
+        <p class="mb-0" style="text-align:center;">&copy; <?php echo date('Y'); ?> Hostel Hungers. All rights reserved.</p>
     </div>
 </footer>
 

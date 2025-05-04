@@ -133,13 +133,14 @@ $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+    color: var(--text-dark);
+    line-height: 1.6;
+    background: url("photos/hostelhunger.jpg") no-repeat center center fixed;
+background-size: 50% 40%;  
+}
 
-        /* Header Styles - FIXED FOR HORIZONTAL LAYOUT */
         .header {
             background-color: var(--header-bg);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -199,7 +200,7 @@ $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
             width: 100%;
             padding: 10px 40px 10px 15px;
             border: 1px solid var(--border-color);
-            border-radius: 50px;
+            border-radius: 5px;
             font-size: 14px;
             outline: none;
             transition: all var(--animation-speed) ease;
@@ -488,19 +489,18 @@ $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
         }
 
         .order-btn {
-            background-color: var(--whatsapp);
+            background-color: green;
             color: white;
             border: none;
             padding: 10px 24px;
-            border-radius: 50px;
+            border-radius: 10px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
             cursor: pointer;
             transition: all var(--animation-speed) ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            width: 100%;
             justify-content: center;
             position: relative;
             overflow: hidden;
@@ -1370,22 +1370,23 @@ $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
             confirmBtn.innerHTML = '<span class="loading"></span>Sending...';
             confirmBtn.disabled = true;
             
-            // Create WhatsApp message
-            let whatsappMsg = "Hello, I would like to place an order:\n\n";
-            whatsappMsg += "*Customer Details:*\n";
-            whatsappMsg += "Name: " + customerName.value + "\n";
-            whatsappMsg += "Phone: " + customerPhone.value + "\n";
-            whatsappMsg += "Address: " + customerAddress.value + "\n\n";
-            
-            whatsappMsg += "*Order Details:*\n";
-            whatsappMsg += "Item: " + currentItem.name + "\n";
-            whatsappMsg += "Size: " + currentItem.selectedSize + "\n";
-            whatsappMsg += "Price: " + (currentItem.selectedSize === 'Full' ? currentItem.fullPrice : currentItem.halfPrice) + "\n";
-            whatsappMsg += "Quantity: " + currentItem.quantity + "\n";
-            whatsappMsg += "Total: ₹" + currentItem.totalPrice.toFixed(2) + "\n\n";
-            
-            whatsappMsg += "Thank you!";
-            
+         // Create WhatsApp message
+let whatsappMsg = "👋 *Hello!* I would like to place an order 🛍️:\n\n";
+
+whatsappMsg += "📋 *Customer Details:*\n";
+whatsappMsg += "👤 Name: " + customerName.value + "\n";
+whatsappMsg += "📞 Phone: " + customerPhone.value + "\n";
+whatsappMsg += "🏠 Address: " + customerAddress.value + "\n\n";
+
+whatsappMsg += "🍽️ *Order Details:*\n";
+whatsappMsg += "🍔 Item: " + currentItem.name + "\n";
+whatsappMsg += "📏 Size: " + currentItem.selectedSize + "\n";
+whatsappMsg += "💰 Price: " + (currentItem.selectedSize === 'Full' ? currentItem.fullPrice : currentItem.halfPrice) + "\n";
+whatsappMsg += "🔢 Quantity: " + currentItem.quantity + "\n";
+whatsappMsg += "🧾 Total: ₹" + currentItem.totalPrice.toFixed(2) + "\n\n";
+
+whatsappMsg += "🙏 Thank you so much! Can't wait to enjoy my meal! 😋❤️";
+   
             // Encode the WhatsApp message
             const encodedMsg = encodeURIComponent(whatsappMsg);
             const whatsappLink = "https://wa.me/917066201454?text=" + encodedMsg;
