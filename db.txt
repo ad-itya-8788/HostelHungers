@@ -1,0 +1,98 @@
+-- Create Tables
+
+CREATE TABLE public.category (
+    cid serial PRIMARY KEY,  -- Added PRIMARY KEY
+    cname character varying(10) UNIQUE,  -- Added UNIQUE constraint
+    CONSTRAINT category_cname_check CHECK (cname IN ('Veg', 'Non_veg'))
+);
+
+-- Insert values into the category table
+INSERT INTO public.category (cname) VALUES ('Veg');
+INSERT INTO public.category (cname) VALUES ('Non_veg');
+
+CREATE TABLE public.menu (
+    mid serial PRIMARY KEY,
+    pname character varying(50) NOT NULL,
+    cid integer,
+    description character varying(100),
+    avl boolean DEFAULT true,
+    img character varying(100),
+    CONSTRAINT menu_pname_key UNIQUE (pname),
+    CONSTRAINT menu_cid_fkey FOREIGN KEY (cid) REFERENCES public.category(cid) ON DELETE CASCADE
+);
+
+CREATE TABLE public.orders (
+    oid serial PRIMARY KEY,
+    cust_name character varying(40),
+    cust_no character varying(12),
+    table_no integer,
+    mid integer,
+    quantity integer DEFAULT 1,
+    chapati integer,
+    roti integer,
+    order_type character varying(20),
+    order_status character varying(20) DEFAULT 'pending'::character varying,
+    ordercost integer,
+    order_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT orders_mid_fkey FOREIGN KEY (mid) REFERENCES public.menu(mid),
+    CONSTRAINT orders_order_status_check CHECK (order_status IN ('pending', 'preparing', 'served', 'complete')),
+    CONSTRAINT orders_order_type_check CHECK (order_type IN ('tableorder', 'homeorder'))
+);
+
+CREATE TABLE public.size_price (
+    sid serial PRIMARY KEY,
+    mid integer,
+    size character varying(5) NOT NULL,
+    price numeric(10,2) NOT NULL,
+    quantity character varying(100) NOT NULL,
+    CONSTRAINT size_price_pid_fkey FOREIGN KEY (mid) REFERENCES public.menu(mid),
+    CONSTRAINT size_price_size_check CHECK (size IN ('Full', 'Half'))
+);
+
+-- Create Functions
+
+CREATE FUNCTION public.add_country_code() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.cust_no IS NOT NULL AND NEW.cust_no NOT LIKE '91%' THEN
+        NEW.cust_no := '91' || NEW.cust_no;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE PROCEDURE public.insert_menu(IN pname character varying, IN cid integer, IN description character varying DEFAULT 'No description'::character varying, IN avl boolean DEFAULT true)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF cid = 1 THEN
+        description := 'Veg: ' || description;
+    ELSIF cid = 2 THEN
+        description := 'Non-Veg: ' || description;
+    ELSE
+        RAISE EXCEPTION 'Invalid category ID. Must be 1 (Veg) or 2 (Non-Veg)';
+    END IF;
+
+    INSERT INTO menu (pname, cid, description, avl)
+    VALUES (pname, cid, description, avl);
+END;
+$$;
+
+CREATE FUNCTION public.update_cust_no() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE orders
+    SET cust_no = '91' || NEW.cust_no
+    WHERE oid = NEW.oid;
+    RETURN NEW;
+END;
+$$;
+
+-- Create Triggers
+
+CREATE TRIGGER trg_add_country_code 
+    BEFORE INSERT ON public.orders 
+    FOR EACH ROW 
+    EXECUTE FUNCTION public.add_country_code();
