@@ -1,12 +1,14 @@
 <?php
 include 'dbconnect.php';
+require 'active.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Hotel Aditya</title>
+    <title>Admin Dashboard |Hostel Hungers - Admin Portal
+ </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -119,7 +121,8 @@ include 'dbconnect.php';
 
 <header class="admin-header">
     <div class="container">
-        <h1 class="admin-title"><span class="gold">Hotel Aditya</span> - Menu Management</h1>
+        <h1 class="admin-title"><span class="gold">Hostel Hungers - Admin Portal
+</span> - Menu Management</h1>
     </div>
 </header>
 

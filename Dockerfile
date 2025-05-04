@@ -1,17 +1,20 @@
-# Use official PHP image with Apache server
-FROM php:8.1-apache
+# Use the official PHP image as the base
+FROM php:7.4-apache
 
-# Install dependencies for PostgreSQL and other necessary libraries
-RUN apt-get update && apt-get install -y libpq-dev
-
-# Install PDO and PDO_PGSQL PHP extensions
-RUN docker-php-ext-install pdo pdo_pgsql
+# Install PostgreSQL dependencies
+RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Copy project files into the Apache server's document root
-COPY . /var/www/html/
+# Set the working directory in the container
+WORKDIR /var/www/html
 
-# Expose the default Apache port
+# Copy the local directory (your project) to the container
+COPY . .
+
+# Expose port 80 to access the app
 EXPOSE 80
+
+# Start Apache in the foreground
+CMD ["apache2-foreground"]

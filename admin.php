@@ -1,3 +1,7 @@
+<?php 
+require 'active.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 

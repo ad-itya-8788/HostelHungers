@@ -2,8 +2,7 @@
 // Database connection at the top
 include 'dbconnect.php';
 
-// Start session for CSRF token
-session_start();
+require 'active.php';
 
 // Generate CSRF token if not exists
 if (empty($_SESSION['csrf_token'])) {
