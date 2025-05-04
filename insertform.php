@@ -188,10 +188,10 @@ $vc = pg_fetch_result($vcResult, 0, 0);
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7fa;
-        }
-        
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
+}
+
         .header {
             background: var(--secondary-color);
             color: white;
@@ -312,7 +312,7 @@ $vc = pg_fetch_result($vcResult, 0, 0);
     <!-- Header -->
     <header class="header">
         <div class="container text-center">
-            <h1 class="header-title"><span class="gold">Hotel Aditya</span> - Menu Management</h1>
+            <h1 class="header-title"><span class="gold">Hostel Hungers</span> - Menu Management</h1>
             <div class="item-count">
                 <span class="veg-count"><i class="fas fa-leaf me-1"></i> <?php echo htmlspecialchars($vc); ?> Veg</span>
                 <span class="mx-2">|</span>
