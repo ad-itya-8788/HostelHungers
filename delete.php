@@ -1,188 +1,227 @@
-<html>
-    <body>
-        <header>
-            Admin Dashboard - Digital Menu Card System - Delete Items
-        </header>
-        <div class="main-content">
-            <?php
-            include 'dbconnect.php';
+<?php
+include 'dbconnect.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Hotel Aditya</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary-color: #d4af37;
+            --secondary-color: #1a1a1a;
+            --accent-color: #8b0000;
+        }
 
-            function showMenu() {
-                global $conn;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
 
-                $query = "SELECT pid, pname, description, img FROM menu ORDER BY pid";
-                $res = pg_query($conn, $query);
-                
-                if (!$res) {
-                    echo "Error in fetching data.";
-                    return;
-                }
+        .admin-header {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #333 100%);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
 
-                if (pg_num_rows($res) > 0) {
-                    echo "<h2>Menu</h2>";
-                    echo "<table>";
-                    echo "<tr><th>Image</th><th>Name</th><th>Description</th><th>Size & Price</th><th>Action</th></tr>";
-                    
-                    while ($item = pg_fetch_assoc($res)) {
-                        $sizeQuery = "SELECT size, price FROM size_price WHERE pid = " . $item['pid'];
-                        $sizeRes = pg_query($conn, $sizeQuery);
-                        if (!$sizeRes) {
-                            echo "Error in fetching size and price.";
-                            continue;
-                        }
+        .admin-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+        }
 
-                        echo "<tr>";
-                        echo "<td><img src='" . $item['img'] . "' alt='" . $item['pname'] . "' width='50'></td>";
-                        echo "<td>" . $item['pname'] . "</td>";
-                        echo "<td>" . $item['description'] . "</td>";
-                        echo "<td>";
-                        while ($size = pg_fetch_assoc($sizeRes)) {
-                            echo ucfirst($size['size']) . ": ₹" . $size['price'] . "<br>";
-                        }
-                        echo "</td>";
-                        echo "<td><a href='?del=" . $item['pid'] . "'><button>Delete</button></a></td>";
-                        echo "</tr>";
+        .admin-title .gold {
+            color: var(--primary-color);
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .menu-table {
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .menu-table th {
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px;
+        }
+
+        .menu-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .btn-back {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .menu-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .admin-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="admin-header">
+    <div class="container">
+        <h1 class="admin-title"><span class="gold">Hotel Aditya</span> - Menu Management</h1>
+    </div>
+</header>
+
+<div class="container main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-utensils me-2"></i>Current Menu Items</h2>
+        <a href="index.php" class="btn-back"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+
+    <?php
+    function showMenu() {
+        global $conn;
+        $query = "SELECT mid, pname, description, img FROM menu ORDER BY mid";
+        $res = pg_query($conn, $query);
+
+        if (!$res) {
+            echo '<div class="alert alert-danger">Error fetching menu data.</div>';
+            return;
+        }
+
+        if (pg_num_rows($res) > 0) {
+            echo '<div class="table-responsive">';
+            echo '<table class="menu-table table">';
+            echo '<thead><tr><th>Image</th><th>Name</th><th>Description</th><th>Size & Price</th><th>Action</th></tr></thead><tbody>';
+
+            while ($item = pg_fetch_assoc($res)) {
+                $sizeQuery = "SELECT size, price FROM size_price WHERE mid = " . $item['mid'];
+                $sizeRes = pg_query($conn, $sizeQuery);
+
+                echo '<tr>';
+                echo '<td><img src="' . $item['img'] . '" alt="' . $item['pname'] . '" class="item-img"></td>';
+                echo '<td>' . $item['pname'] . '</td>';
+                echo '<td>' . $item['description'] . '</td>';
+                echo '<td>';
+
+                if ($sizeRes) {
+                    while ($size = pg_fetch_assoc($sizeRes)) {
+                        echo '<span class="badge bg-light text-dark me-2">';
+                        echo ucfirst($size['size']) . ': ₹' . $size['price'];
+                        echo '</span>';
                     }
-
-                    echo "</table>";
                 } else {
-                    echo "<p>No items available.</p>";
+                    echo 'N/A';
                 }
+
+                echo '</td>';
+                echo '<td>';
+                echo '<a href="?del=' . $item['mid'] . '" class="btn-delete" onclick="return confirm(\'Are you sure you want to delete this item?\')">';
+                echo '<i class="fas fa-trash-alt me-1"></i> Delete</a>';
+                echo '</td>';
+                echo '</tr>';
             }
 
-            showMenu();
+            echo '</tbody></table></div>';
+        } else {
+            echo '<div class="alert alert-info">No menu items found.</div>';
+        }
+    }
 
-            if (isset($_GET['del'])) {
-                $pid = (int) $_GET['del'];
+    // Handle deletion
+    if (isset($_GET['del'])) {
+        $mid = (int)$_GET['del'];
+        pg_query($conn, "BEGIN");
+        $delSizePrice = pg_query($conn, "DELETE FROM size_price WHERE mid = $mid");
+        $delMenu = pg_query($conn, "DELETE FROM menu WHERE mid = $mid");
 
-                $delSizePrice = "DELETE FROM size_price WHERE pid = $pid";
-                $delMenu = "DELETE FROM menu WHERE pid = $pid";
+        if ($delSizePrice && $delMenu) {
+            pg_query($conn, "COMMIT");
+            echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Menu item deleted successfully.',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '" . $_SERVER['PHP_SELF'] . "';
+                });
+            </script>";
+        } else {
+            pg_query($conn, "ROLLBACK");
+            echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to delete menu item.',
+                    showConfirmButton: true
+                });
+            </script>";
+        }
+    }
 
-                if (pg_query($conn, $delSizePrice) && pg_query($conn, $delMenu)) {
-                    echo "<p>Item deleted!</p>";
-                    header("Location: " . $_SERVER['PHP_SELF']);
-                    exit;
-                } else {
-                    echo "<p>Error deleting item.</p>";
-                }
-            }
-            ?>
-        </div>
+    showMenu();
+    ?>
+</div>
 
-        <div class="button-container">
-            <a href="index.html" class="back">Go Back</a>
-        </div>
+<footer class="footer">
+    <div class="container">
+        <p class="mb-0" style="text-align:center;">&copy; <?php echo date('Y'); ?> Hotel Aditya. All rights reserved.</p>
+    </div>
+</footer>
 
-        <footer>
-            &copy; 2024 Hotel Aditya. All rights reserved.
-        </footer>
-    </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding-top: 50px; 
-        padding-bottom: 50px; 
-    }
-
-    .main-content {
-        padding: 20px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    table, th, td {
-        border: 1px solid #ccc;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    img {
-        border-radius: 5px;
-    }
-
-    button {
-        color: red;
-        border: 2px solid black;
-        border-radius: 4px;
-        padding: 5px 10px;
-    }
-
-    button:hover {
-        background-color: red;
-        color: white;
-    }
-
-    header {
-        background-color: black;
-        text-align: center;
-        font-size: 1.5em;
-        padding: 10px;
-        color: white;
-        font-weight: bold;
-        text-transform: uppercase;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-    }
-
-    footer {
-        background-color: black;
-        text-align: center;
-        font-size: 1em;
-        padding: 10px;
-        color: white;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-    }
-    
-    button {
-        color: white;
-        background-color: red;
-        border: 2px solid red;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    button:hover {
-        background-color: green;
-    }
-
-    a.back{
-        background-color: #008CBA;
-        color: white;
-        padding: 14px;
-        margin-right:34px;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-    }
-
-    a.back:hover {
-        background-color: #005f75;
-    }
-
-    .button-container {
-        text-align: right;
-        margin-top: 20px;
-    }
-</style>

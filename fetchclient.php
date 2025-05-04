@@ -7,14 +7,14 @@ function displayMenuItems($searchQuery = "")
 
     // SQL query to fetch the menu items based on the search query
     if (!empty($searchQuery)) {
-        $sql = "SELECT m.pid, m.pname, m.description, m.img, sp.size, sp.price, sp.quantity 
+        $sql = "SELECT m.mid, m.pname, m.description, m.img, sp.size, sp.price, sp.quantity 
                 FROM menu m
-                LEFT JOIN size_price sp ON m.pid = sp.pid
+                LEFT JOIN size_price sp ON m.mid = sp.mid
                 WHERE m.pname ILIKE '%" . pg_escape_string($searchQuery) . "%'";
     } else {
-        $sql = "SELECT m.pid, m.pname, m.description, m.img, sp.size, sp.price, sp.quantity 
+        $sql = "SELECT m.mid, m.pname, m.description, m.img, sp.size, sp.price, sp.quantity 
                 FROM menu m
-                LEFT JOIN size_price sp ON m.pid = sp.pid";
+                LEFT JOIN size_price sp ON m.mid = sp.mid";
     }
 
     $result = pg_query($conn, $sql);
@@ -30,11 +30,11 @@ function displayMenuItems($searchQuery = "")
         $menuItems = [];
         
         while ($row = pg_fetch_assoc($result)) {
-            $pid = $row['pid'];
+            $mid = $row['mid'];
 
-            if (!isset($menuItems[$pid])) {
+            if (!isset($menuItems[$mid])) {
                 // If the menu item is not already added, initialize the array with item info
-                $menuItems[$pid] = [
+                $menuItems[$mid] = [
                     'pname' => $row['pname'],
                     'description' => $row['description'],
                     'img' => $row['img'],
@@ -45,12 +45,12 @@ function displayMenuItems($searchQuery = "")
 
             // Add full or half size data based on the size type
             if ($row['size'] == 'Full') {
-                $menuItems[$pid]['fullSize'] = [
+                $menuItems[$mid]['fullSize'] = [
                     'price' => '₹' . $row['price'],
                     'quantity' => $row['quantity']
                 ];
             } elseif ($row['size'] == 'Half') {
-                $menuItems[$pid]['halfSize'] = [
+                $menuItems[$mid]['halfSize'] = [
                     'price' => '₹' . $row['price'],
                     'quantity' => $row['quantity']
                 ];
@@ -104,3 +104,5 @@ function displayMenuItems($searchQuery = "")
 $searchQuery = isset($_POST['searchQuery']) ? $_POST['searchQuery'] : '';
 displayMenuItems($searchQuery);
 ?>
+
+
